@@ -1,0 +1,1 @@
+This project aims to create a comprehensive Food Delivery Web Application employing Microservice Architecture (with Nest.js, GraphQL, Next.js, Prisma). Separate applications will be built for Admin, User, Restaurant Owner, and Delivery Man.
