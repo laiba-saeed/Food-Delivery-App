@@ -1,14 +1,39 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// This is the Prisma schema file used to define the data models, 
+// relationships, and database configuration for the application.
+// Prisma uses this schema to generate a type-safe client for interacting 
+// with the MongoDB database. The schema includes model definitions, 
+// enums, and field-level validations. 
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+// The Prisma Client allows your application to interact with the database using type-safe queries.
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+// Defines an enum named Role that restricts user roles to either Admin or User.
+enum Role {
+  Admin
+  User
+}
+
+model Avatars {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  public_id String
+  url String
+  user User @relation(fields: [userId], references: [id])
+  userId String @unique @db.ObjectId
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String
+  password String
+  avatar Avatars?
+  role Role @default(User)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

@@ -1,12 +1,14 @@
+/* Resolver in NestJS is responsible for managing the interaction between GraphQL queries/mutations/subscriptions 
+and the application logic, handling how data is retrieved, created, or updated. */
+
 // import { UseFilters } from "@nestjs/common";
-import { Args, Context, Mutation, Resolver } from "@nestjs/graphql";
+import { Args, Query, Mutation, Resolver } from "@nestjs/graphql";
 import { UsersService } from "./users.service";
 import { RegisterDto } from "./dto/user.dto";
 import { RegisterResponse } from "./types/user.types";
 import { BadRequestException } from "@nestjs/common";
+import { User } from "./entities/user.entity";
 
-/* Resolver in NestJS is responsible for managing the interaction between GraphQL queries/mutations/subscriptions 
-and the application logic, handling how data is retrieved, created, or updated. */
 @Resolver('User')
 // @UseFilters
 export class UserResolver {
@@ -27,5 +29,10 @@ export class UserResolver {
         const user = await this.userService.register(registerDto);
 
         return { user };
+    }
+
+    @Query(() => [User])
+    async getUsers() {
+        return this.userService.getUsers();
     }
 }
